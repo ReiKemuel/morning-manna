@@ -1,0 +1,6 @@
+# Content never gets committed — it reaches Rei via Gmail, not git.
+editions/
+.tmp/
+.env
+*.pyc
+__pycache__/
