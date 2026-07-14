@@ -2,5 +2,6 @@
 editions/
 .tmp/
 .env
+.pii_patterns
 *.pyc
 __pycache__/

@@ -26,7 +26,7 @@ Unvetted suggestions to pull from later. (ROADMAP.md = committed plan; this = th
 ## Brand / identity
 
 - **⭐ REMINDER (Rei asked to be reminded): make a wordmark/logo for Morning Manna.** A simple typographic mark, not clip art — likely gold-on-cornflower to match the palette. Optional personalization: a "rei ·" prefix or "from rei" touch. Natural fit for the Day 5 (website/brand) build.
-- Palette locked: **Cornflower blue** (`#3d63b0`) + **antique gold** (`#b0863d`) contrast — gold treatment TBD (see palette artifact).
+- Palette locked: **Cornflower blue** (`#3568b3`) + **antique gold** (`#b0863d`) — gold masthead, locked 2026-07-14 (renderer BRAND is the source of truth).
 
 ## Engineering
 
