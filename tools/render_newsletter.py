@@ -31,12 +31,13 @@ from pathlib import Path
 BRAND = {
     "name": "Morning Manna",
     "tagline": "Sunday's message, carried into the week",
-    "ink": "#26303c",          # deep slate — text
-    "muted": "#71808f",        # slate gray — meta
-    "accent": "#4f6f9e",       # calm dusty blue (neutral, easy on morning eyes)
-    "accent_soft": "#eef2f8",  # airy blue tint — callout backgrounds
-    "rule": "#e4e9f0",         # soft blue-gray hairline
-    "bg": "#f4f6f9",           # cool paper
+    "ink": "#212c3c",          # deep slate-navy — text
+    "muted": "#6a798d",        # slate gray — meta
+    "accent": "#3568b3",       # cornflower blue (corrected off the violet line)
+    "accent_soft": "#e6edfb",  # airy cornflower tint — callout backgrounds
+    "rule": "#dbe4f4",         # soft blue hairline
+    "bg": "#eef2fb",           # cool cornflower paper
+    "gold": "#b0863d",         # antique gold — masthead + sign-off contrast
     "card": "#ffffff",
     "font": "Georgia, 'Times New Roman', serif",
 }
@@ -96,7 +97,7 @@ def render(edition: dict) -> str:
     signoff_html = ""
     if e["signoff"]:
         signoff_html = f"""
-        <tr><td style="padding:24px 34px 0 34px;font:italic 16px/1.6 {b['font']};color:{b['accent']};">{html.escape(e['signoff'])}</td></tr>"""
+        <tr><td style="padding:24px 34px 0 34px;font:italic 16px/1.6 {b['font']};color:{b['gold']};">{html.escape(e['signoff'])}</td></tr>"""
 
     meta_line = " &nbsp;·&nbsp; ".join(
         x for x in (e["service"], e["preacher"], e["text"]) if x
@@ -110,8 +111,8 @@ def render(edition: dict) -> str:
 <tr><td align="center">
   <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:{b['card']};border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);">
 
-    <tr><td style="padding:26px 34px 18px 34px;border-bottom:1px solid {b['rule']};">
-      <div style="font:700 13px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:{b['accent']};">{html.escape(b['name'])}</div>
+    <tr><td style="padding:26px 34px 18px 34px;border-bottom:2px solid {b['gold']};">
+      <div style="font:700 13px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:{b['gold']};">{html.escape(b['name'])}</div>
       <div style="margin-top:4px;font:13px Arial,sans-serif;color:{b['muted']};">{html.escape(b['tagline'])}</div>
     </td></tr>
 
