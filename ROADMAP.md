@@ -19,7 +19,7 @@ approved it's **scheduled to send the next AM**. Keeps the Gmail-safety rule int
 | Fri | Random pick from resources / a book currently being read |
 | Sat | Random pick again (or Friday's chosen interest) |
 | Sun AM | **Week-in-summary** newsletter |
-| Sun PM (~9pm) | Potter's House Mandaluyong AM & PM preachings, pulled + summarized via YouTube MCP |
+| Sun PM (~9pm) | Potter's House Mandaluyong AM & PM preachings — **unlocked early**: `tools/fetch_sermon.sh` + `workflows/preaching_recap.md` (works for Vimeo/Prescott showcase too) |
 
 ## Build-out (mapped to the challenge)
 
