@@ -3,10 +3,17 @@
 **Objective:** Turn one set of sermon notes into a voice-matched devotional email Rei reads after his morning devo.
 
 **Inputs:**
-- Raw sermon notes (pasted by Rei, or later pulled from Notion/YouTube MCP).
-- The service context (e.g. "Sunday AM", date, preacher, text).
+- Raw sermon notes — **primary: Notion** (Day 2, live 2026-07-16); fallback: pasted by Rei.
+- The service context (e.g. "Sunday AM", date, preacher, text) — in Notion notes this is the
+  first line of the page (date, preacher, text refs).
 
 **Steps:**
+0. **Notion retrieval (primary):** `notion-search` for the "Sermon Notes" page (top-level page;
+   one child page per sermon, titled by message title). Pick the child by date/title for the
+   edition being built, `notion-fetch` it. Notes are tab-indented outline bullets with `###`
+   section heads; italics in the notes are often already inner-speech/creative-imagination —
+   carry them into the edition's `<em>` treatment. (Page IDs stay out of this repo — search by
+   title each time; it's cheap.)
 1. Save the raw notes to `.tmp/` (disposable). Never commit them.
 2. Read the notes. Extract:
    - The **theme** (one line — what the message is really about).

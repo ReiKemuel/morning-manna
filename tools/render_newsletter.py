@@ -29,6 +29,7 @@ Required fields fail loudly if missing/empty; a malformed edition never
 renders half-empty. Optional brand override: tools/brand.json (same keys
 as BRAND) reskins without touching this file.
 """
+import base64
 import html
 import json
 import sys
@@ -47,6 +48,9 @@ BRAND = {
     "gold": "#b0863d",         # antique gold — masthead + sign-off contrast
     "card": "#ffffff",
     "font": "Georgia, 'Times New Roman', serif",
+    "logo_file": "",           # optional: path (relative to tools/) to a masthead image;
+                               # embedded as a data URI — keep it small, Gmail clips ~100KB total
+    "logo_width": 210,         # rendered width in px
 }
 
 _brand_override = Path(__file__).with_name("brand.json")
@@ -74,6 +78,24 @@ def _p(text: str) -> str:
     """Allow simple pre-built HTML paragraphs, else wrap plain text."""
     text = text.strip()
     return text if text.startswith("<") else f"<p>{html.escape(text)}</p>"
+
+
+def _masthead(b: dict) -> str:
+    if b.get("logo_file"):
+        path = Path(__file__).parent / b["logo_file"]
+        if path.exists():
+            suffix = path.suffix.lstrip(".").replace("jpg", "jpeg")
+            data = base64.b64encode(path.read_bytes()).decode()
+            return f"""
+    <tr><td align="center" style="padding:26px 34px 16px 34px;border-bottom:2px solid {b['gold']};">
+      <img src="data:image/{suffix};base64,{data}" width="{b['logo_width']}" alt="{html.escape(b['name'])}" style="display:block;width:{b['logo_width']}px;max-width:60%;height:auto;">
+      <div style="margin-top:10px;font:13px Arial,sans-serif;color:{b['muted']};">{html.escape(b['tagline'])}</div>
+    </td></tr>"""
+    return f"""
+    <tr><td style="padding:26px 34px 18px 34px;border-bottom:2px solid {b['gold']};">
+      <div style="font:700 13px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:{b['gold']};">{html.escape(b['name'])}</div>
+      <div style="margin-top:4px;font:13px Arial,sans-serif;color:{b['muted']};">{html.escape(b['tagline'])}</div>
+    </td></tr>"""
 
 
 def render(edition: dict) -> str:
@@ -170,10 +192,7 @@ def render(edition: dict) -> str:
 <tr><td align="center">
   <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:{b['card']};border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);">
 
-    <tr><td style="padding:26px 34px 18px 34px;border-bottom:2px solid {b['gold']};">
-      <div style="font:700 13px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:{b['gold']};">{html.escape(b['name'])}</div>
-      <div style="margin-top:4px;font:13px Arial,sans-serif;color:{b['muted']};">{html.escape(b['tagline'])}</div>
-    </td></tr>
+    {_masthead(b)}
 
     <tr><td style="padding:26px 34px 0 34px;">
       <div style="font:12px Arial,sans-serif;color:{b['muted']};">{html.escape(e['date'])}</div>

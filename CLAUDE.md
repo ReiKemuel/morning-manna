@@ -11,9 +11,16 @@ morning devo. Built on the **WAT framework** (Workflows · Agent · Tools).
 
 ## Sources of notes (in order of adoption)
 
-1. **MVP (now):** Rei pastes a week's notes into chat → agent writes them to `.tmp/` → builds the edition.
-2. **Day 2:** New daily notes live in **Notion** → Notion MCP retrieves them.
-3. **Later:** Sunday-night recap pulls Potter's House Mandaluyong AM/PM preachings via YouTube MCP.
+1. **Primary (Day 2, active):** New daily notes live in **Notion** → Notion MCP retrieves them.
+   Notion holds *new* notes only; the archive stays in the Church folder.
+2. **Ask-pathway (still supported):** Rei pastes notes or requests a topic in chat → agent writes
+   to `.tmp/` → builds the edition.
+3. **Later:** Sunday-night recap pulls Potter's House Mandaluyong AM/PM preachings via
+   `tools/fetch_sermon.sh` + `workflows/preaching_recap.md`.
+
+**Source policy:** editions may be built from any pathway for Rei's personal reading, but anything
+**publicized** (sent beyond Rei, posted, shared) must be sourced from **Rei's own sermon notes** —
+never from fellowship resources or ask-pathway topics that aren't his material.
 
 ## Delivery
 
@@ -31,6 +38,11 @@ Write devotionals in **Rei's voice**, not sermon-report voice:
 - Earnest, direct, application-focused. Emphatic where he'd be emphatic.
 - Faithful to the notes — never invent theology beyond what the notes contain.
 - **Italics = a person talking.** Wrap first-person inner speech, decision-making, and specific illustrative examples in `<em>` — Abram's reasons, Sarai's thinking, the tempting inner monologue. This is a voice signature Rei likes; apply it consistently.
+- **Italics also cover rhetorical self-questions** — "*what do I do when the leader is wrong?*" (Rei's 07-16 edit).
+- **Taglish switches at clause level, never word level** — "profit for me o kung lugi ako", not "profit or lugi for me". A lone Tagalog word dropped into an English sentence reads fake; a natural clause switch reads like him.
+- **Tagalog inside quotes must be grammatically natural** — draft it as a Tagalog speaker would say it, not translated word-by-word.
+- **Capital-W "Word"** when referring to the preaching/Scripture.
+- **Go easy on em-dashes** — Rei converts many of them to "but"/commas. One per sentence max as a default.
 
 ## Sensitivity
 
