@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/mark.png" width="150" alt="Morning Manna — open Bible under a rising sun">
+</p>
+
 # Morning Manna
 
 I take notes during church services. For years they just sat in a notes app. This project turns them into a daily devotional email, written in my own voice, that lands in my inbox after my morning devotions.
@@ -22,6 +26,12 @@ Delivery is human-in-the-loop by design: the agent produces a Gmail draft, I rev
 | `compact_vtt.py` | Compresses subtitle files into a readable transcript |
 | `generate_image.py` / `make_transparent.py` | Branding pipeline — image generation plus local alpha keying and compositing |
 | `check_repo_clean.sh` | Guard script — has to pass before anything gets committed |
+
+## What an edition looks like
+
+<p align="center">
+  <img src="docs/edition-sample.png" width="520" alt="A delivered Morning Manna edition — branded masthead, summary quote, and reflection box">
+</p>
 
 ## What's public and what isn't
 
