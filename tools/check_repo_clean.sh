@@ -7,7 +7,12 @@ cd "$(dirname "$0")/.."
 
 fail=0
 
-if git ls-files | grep -E '^(editions|\.tmp)/' ; then
+# Scan tracked AND untracked-not-ignored files — a new file is one `git add` away
+# from being pushed, so it must meet the bar before it's staged (learned 07-17:
+# a README with guarded patterns passed this guard because it wasn't tracked yet).
+FILES=$(git ls-files --cached --others --exclude-standard)
+
+if echo "$FILES" | grep -E '^(editions|\.tmp)/' ; then
   echo "FAIL: content files are tracked" >&2; fail=1
 fi
 
@@ -18,7 +23,7 @@ if [ ! -f .pii_patterns ]; then
   exit 1
 fi
 PATTERNS=$(cat .pii_patterns)
-hits=$(git grep -n -i -E "$PATTERNS" -- $(git ls-files) 2>/dev/null || true)
+hits=$(grep -n -i -E "$PATTERNS" $FILES 2>/dev/null || true)
 if [ -n "$hits" ]; then
   echo "FAIL: personal-detail pattern in tracked files:" >&2
   echo "$hits" >&2
