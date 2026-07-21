@@ -25,6 +25,7 @@
 4. Run `python3 tools/render_newsletter.py editions/<slug>.json` → produces `editions/<slug>.html`.
 5. Voice-check the prose before delivery — "does this sound like Rei would say it?" If not, revise, don't ship.
 6. Deliver as a **Gmail draft** (never auto-send without explicit standing authorization).
+   - The Gmail `create_draft` MCP tool takes `htmlBody` **inline** (no file-path arg). The full render's ~30KB base64 masthead can't be hand-transcribed into a tool arg reliably — so render a **logo-off compact body** for the draft (`import render_newsletter; render_newsletter.BRAND['logo_file']=''`, then `render(edition)`), and keep the on-disk `editions/*.html` with the image. Inline masthead-in-draft is the queued Gmail-CID item.
 
 **Edge cases / learnings:**
 - Notes are outline-form (I/II/III, A/B/C). Convert to prose; don't paste the outline verbatim.
