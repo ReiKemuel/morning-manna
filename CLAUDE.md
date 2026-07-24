@@ -24,9 +24,9 @@ never from fellowship resources or ask-pathway topics that aren't his material.
 
 ## Delivery
 
-- Output is a **Gmail draft** by default. **Never auto-send without Rei's explicit standing authorization** for this specific automation (see the hub's `gmail-mcp-safe-handling` rule).
-- **Target delivery model:** each evening the next morning's edition is drafted and Rei reviews it; once he approves, it's scheduled to send the next AM. Human-in-the-loop by design — keeps the Gmail-safety rule intact even when running daily.
-- The 6AM daily send (Day 6, scheduled task) is a standing pre-authorization Rei grants once he trusts the output.
+- **Live delivery model (2026-07-23):** each edition is drafted and **Rei reviews it**; once he approves, `tools/schedule_send.py` schedules it to auto-send at **6AM Manila** via **Resend** (`scheduled_at`, free tier — no cron/server). Human-in-the-loop by design: generation + approval stay manual; only the send is automated.
+- **Standing authorization:** Rei granted standing 6AM auto-send 2026-07-23 — but **only for an edition he has approved**. Never schedule an unreviewed edition. No approved edition on a given day → nothing sends (empty days are skipped).
+- This send path uses Resend (Rei's own inbox), not the Gmail `create_draft` MCP tool, so it doesn't touch the `gmail-mcp-safe-handling` write-side rule; Gmail stays a read/preview surface only.
 
 See `ROADMAP.md` for the full future build-out.
 

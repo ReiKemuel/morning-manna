@@ -24,8 +24,12 @@
 3. Assemble a structured edition JSON (schema in `tools/render_newsletter.py`).
 4. Run `python3 tools/render_newsletter.py editions/<slug>.json` → produces `editions/<slug>.html`.
 5. Voice-check the prose before delivery — "does this sound like Rei would say it?" If not, revise, don't ship.
-6. Deliver as a **Gmail draft** (never auto-send without explicit standing authorization).
-   - The Gmail `create_draft` MCP tool takes `htmlBody` **inline** (no file-path arg). The full render's ~30KB base64 masthead can't be hand-transcribed into a tool arg reliably — so render a **logo-off compact body** for the draft (`import render_newsletter; render_newsletter.BRAND['logo_file']=''`, then `render(edition)`), and keep the on-disk `editions/*.html` with the image. Inline masthead-in-draft is the queued Gmail-CID item.
+6. **Deliver — review, then schedule the 6AM auto-send** (target model, live 2026-07-23):
+   - **a. Review.** Rei reads the rendered `editions/<slug>.html` (or a Gmail preview draft) and approves. Generation stays human-in-the-loop; nothing sends unreviewed.
+     - Gmail preview note: the `create_draft` MCP tool takes `htmlBody` **inline** (no file-path arg), and the ~30KB base64 masthead can't be hand-transcribed into a tool arg reliably — render a **logo-off compact body** for the draft (`import render_newsletter; render_newsletter.BRAND['logo_file']=''`, then `render(edition)`), keeping the on-disk `.html` with the image.
+   - **b. Schedule.** Once approved, run `python3 tools/schedule_send.py editions/<slug>.json` → hands the rendered HTML to **Resend** with `scheduled_at` = next 6AM Manila. Resend holds and sends it (free tier; no cron/server). **Standing 6AM auto-send authorized 2026-07-23** — only for an edition Rei has approved. `--at "in 1 min"` / `--now` for testing.
+   - **Skip empty days:** no approved edition → nothing sends. (daily-verse retired 2026-07-23 — redundant with the memory verse.)
+   - Needs `RESEND_API_KEY` + `MY_EMAIL` in `.env` (gitignored). Masthead is a data-URI — confirm it renders in Gmail via Resend; CID-inline is still the queued upgrade.
 
 **Edge cases / learnings:**
 - Notes are outline-form (I/II/III, A/B/C). Convert to prose; don't paste the outline verbatim.

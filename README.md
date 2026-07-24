@@ -14,7 +14,7 @@ Built with Claude Code on the **WAT framework** (Workflows · Agent · Tools), f
 - **Agent** — Claude Code reads the workflow, pulls my latest notes from Notion via MCP, extracts the theme and memory verse, and writes the devotional in my voice.
 - **Tools** (`tools/`) — deterministic Python. No AI, no network surprises. The agent decides *what* to say; the tools decide *how it renders*.
 
-Delivery is human-in-the-loop by design: the agent produces a Gmail draft, I review it, I hit send. The agent never sends on its own.
+Delivery is human-in-the-loop by design: I review each edition first, and once I approve it, it schedules itself to land in my inbox at 6AM the next morning. The agent never sends anything I haven't signed off on.
 
 ## The tools
 

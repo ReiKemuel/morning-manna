@@ -26,7 +26,7 @@ approved it's **scheduled to send the next AM**. Keeps the Gmail-safety rule int
 - **Note source → Notion (Day 2).** New daily notes live in Notion; Notion MCP retrieves them. Notion holds *new* notes only — the archive stays in the Church folder. (No 2019 backfill into Notion.)
 - **Voice + format → a reusable Skill (Day 3).** Freeze the voice signatures (incl. the italics-for-inner-speech rule) and the layout so every edition is consistent.
 - **Collapsible web version (Day 5).** Email can't do `<details>`; a hosted page can. Each section becomes an expand/collapse panel (teaser → full text). The email links to it with "Read the full devotional →".
-- **Scheduled AM send (Day 6).** Scheduled task fires the approved edition; requires the note source to be machine-readable first (depends on Day 2).
+- **Scheduled AM send (Day 6) — DONE 2026-07-23.** `tools/schedule_send.py` hands an approved edition to Resend with `scheduled_at` = 6AM Manila; Resend holds and delivers it (free tier, no cron/server). Replaced the retired `daily-verse` Trigger.dev task (redundant with the memory verse).
 - **Executive-assistant integration (Day 7).** Morning Manna becomes one routine inside a broader daily EA.
 
 ## Branding & visuals (added 2026-07-16)
