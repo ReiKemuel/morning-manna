@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Schedule an approved edition to auto-send at 6AM Manila via Resend.
+"""Schedule an approved edition to auto-send at 5AM Manila via Resend.
 
 Delivery layer for the human-in-the-loop daily model: the agent drafts and Rei
 approves an edition in the evening; this tool hands the rendered HTML to Resend
@@ -8,9 +8,19 @@ No cron, no server — Resend's free tier does the waiting. Generation stays loc
 (free, voice-matched); only the send is automated.
 
 Usage:
-    python3 tools/schedule_send.py editions/2026-07-24_thu.json      # → next 6AM Manila
+    python3 tools/schedule_send.py editions/2026-07-24_thu.json      # → next 5AM Manila
     python3 tools/schedule_send.py editions/2026-07-24_thu.json --at "in 1 min"   # test
     python3 tools/schedule_send.py editions/2026-07-24_thu.json --now             # send now
+
+**Scheduling a batch requires an explicit --at per edition** with a full ISO
+timestamp, e.g. --at "2026-08-09T05:00:00+08:00". The bare default resolves to
+the *next* 5AM for every call, so a loop without --at stacks the whole queue
+onto one morning.
+
+**The send is final.** The current RESEND_API_KEY is send-only: GET and PATCH on
+/emails/:id both return 403, so a scheduled edition cannot be cancelled or
+rescheduled. Never queue an edition whose content is still in flux. Every send is
+appended to editions/.send_log.jsonl (gitignored) — the only record of what is queued.
 
 Reads the edition's rendered `.html` sibling (run render_newsletter.py first) and
 pulls the subject line from the edition JSON. Requires RESEND_API_KEY and MY_EMAIL
@@ -46,9 +56,9 @@ def load_env() -> dict:
     return env
 
 
-def next_6am_manila(now: datetime | None = None) -> datetime:
+def next_5am_manila(now: datetime | None = None) -> datetime:
     now = now or datetime.now(MANILA)
-    target = now.replace(hour=6, minute=0, second=0, microsecond=0)
+    target = now.replace(hour=5, minute=0, second=0, microsecond=0)
     if target <= now:
         target += timedelta(days=1)
     return target
@@ -109,11 +119,23 @@ def main() -> int:
     elif args.at:
         scheduled_at, when = args.at, args.at
     else:
-        target = next_6am_manila()
-        scheduled_at, when = target.isoformat(), target.strftime("%a %Y-%m-%d 06:00 Manila")
+        target = next_5am_manila()
+        scheduled_at, when = target.isoformat(), target.strftime("%a %Y-%m-%d 05:00 Manila")
 
     result = send(api_key, to, subject, html, scheduled_at)
-    print(f"scheduled: {subject!r} → {to} @ {when}  (id: {result.get('id', '?')})")
+    eid = result.get("id", "?")
+
+    # The send cannot be recalled (send-only key), so the log is the only record
+    # of what is queued. Append-only, next to the gitignored editions.
+    log = src.parent / ".send_log.jsonl"
+    with log.open("a", encoding="utf-8") as f:
+        f.write(json.dumps({
+            "slug": src.stem, "id": eid, "scheduled_at": scheduled_at or "now",
+            "to": to, "subject": subject,
+            "logged_at": datetime.now(MANILA).isoformat(timespec="seconds"),
+        }, ensure_ascii=False) + "\n")
+
+    print(f"scheduled: {subject!r} → {to} @ {when}  (id: {eid})")
     return 0
 
 

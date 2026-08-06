@@ -20,6 +20,7 @@ Edition JSON schema:
   "sections": [ {"heading": "...", "body": "<p>...</p>"} ],
   "memory_verse": {"ref": "Proverbs 3:5", "text": "Trust in the LORD..."},
   "application_prompt": "Where am I tempted to...",
+  "steps": ["Write it down.", "Do the one thing."],           # optional — numbered "Do this today"
   "previous_application": "Yesterday's application prompt",   # optional — renders a check-in
   "recent_verses": [ {"ref": "...", "text": "..."} ],         # optional — spaced-repetition recap
   "signoff": "Kaya today, walk His way."         # optional
@@ -162,12 +163,26 @@ def render(edition: dict) -> str:
 
     app_html = ""
     if e["application_prompt"]:
+        steps_html = ""
+        steps = [s for s in edition.get("steps", []) if s]
+        if steps:
+            rows = "".join(
+                f"""<tr>
+                <td width="24" valign="top" style="padding:7px 0 0 0;font:700 15px {b['font']};color:{b['accent']};">{i}.</td>
+                <td valign="top" style="padding:7px 0 0 0;font:16px/1.6 {b['font']};color:{b['ink']};">{html.escape(s)}</td>
+              </tr>"""
+                for i, s in enumerate(steps, 1)
+            )
+            steps_html = f"""
+              <div style="margin-top:16px;font:600 11px/1.4 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:{b['accent']};">Do this today</div>
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:2px;">{rows}</table>"""
         app_html = f"""
         <tr><td style="padding:26px 34px 4px 34px;">
           <table width="100%" cellpadding="0" cellspacing="0" style="border:1.5px dashed {b['rule']};border-radius:10px;">
             <tr><td style="padding:20px 24px;">
               <div style="font:600 12px/1.4 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:{b['muted']};">Application &mdash; write it down</div>
               <div style="margin-top:8px;font:16px/1.7 {b['font']};color:{b['ink']};">{html.escape(e['application_prompt'])}</div>
+              {steps_html}
               <div style="margin-top:14px;border-bottom:1px solid {b['rule']};height:26px;"></div>
               <div style="margin-top:14px;border-bottom:1px solid {b['rule']};height:26px;"></div>
               <div style="margin-top:14px;border-bottom:1px solid {b['rule']};height:26px;"></div>
